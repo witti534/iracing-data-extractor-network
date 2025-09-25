@@ -8,9 +8,9 @@ namespace Core;
 /// <summary>
 /// This class is responsible for containing the thread which sends UDP packages.
 /// </summary>
-public class UdpThread
+public class NetworkFunctionality
 {
-    public UdpThread(string address, int port, BasicDataModel data, CancellationToken cancellationToken)
+    public NetworkFunctionality(string address, int port, BasicDataModel data, CancellationToken cancellationToken)
     {
         _ipEndPoint = new IPEndPoint(IPAddress.Parse(address), port);
         _data = data;
@@ -23,11 +23,14 @@ public class UdpThread
         while (!_cancellationToken.IsCancellationRequested)
         {
             byte[] jsonStringBytes = JsonSerializer.SerializeToUtf8Bytes(_data);
+            var jsonString = System.Text.Encoding.UTF8.GetString(jsonStringBytes);
+            Console.WriteLine(jsonString);
 
             _udpClient.Send(jsonStringBytes, jsonStringBytes.Length, _ipEndPoint);
 
-            Thread.Sleep(60);
+            Thread.Sleep(120);
         }
+        Console.WriteLine("Killed UDP thread.");
     }
 
     private IPEndPoint _ipEndPoint;
