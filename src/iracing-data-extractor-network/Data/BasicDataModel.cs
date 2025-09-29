@@ -5,6 +5,8 @@
 /// </summary>
 public record BasicDataModel
 {
+
+    public bool iRacingConnection {  get; set; }
     /// <summary>How many laps have been driven.</summary>
     public int LapCount { get; set; }
     /// <summary>If the current driver is on the track.</summary>

@@ -14,27 +14,19 @@ public class NetworkFunctionality
     {
         _ipEndPoint = new IPEndPoint(IPAddress.Parse(address), port);
         _data = data;
-        _cancellationToken = cancellationToken;
         _udpClient = new();
     }
 
-    public void ThreadLoop()
+    public void PrepareAndSendUdpData()
     {
-        while (!_cancellationToken.IsCancellationRequested)
-        {
-            byte[] jsonStringBytes = JsonSerializer.SerializeToUtf8Bytes(_data);
-            var jsonString = System.Text.Encoding.UTF8.GetString(jsonStringBytes);
-            Console.WriteLine(jsonString);
+        byte[] jsonStringBytes = JsonSerializer.SerializeToUtf8Bytes(_data);
+        var jsonString = System.Text.Encoding.UTF8.GetString(jsonStringBytes);
+        //Console.WriteLine(jsonString);
 
-            _udpClient.Send(jsonStringBytes, jsonStringBytes.Length, _ipEndPoint);
-
-            Thread.Sleep(120);
-        }
-        Console.WriteLine("Killed UDP thread.");
+        _udpClient.Send(jsonStringBytes, jsonStringBytes.Length, _ipEndPoint);
     }
 
     private IPEndPoint _ipEndPoint;
     private BasicDataModel _data;
-    private CancellationToken _cancellationToken;
     private UdpClient _udpClient;
 }
