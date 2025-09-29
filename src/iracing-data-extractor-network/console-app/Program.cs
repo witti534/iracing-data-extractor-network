@@ -50,12 +50,12 @@ internal class Program
 
         void OnTelemetryUpdate(object? sender, TelemetryData e)
         {
-            if (counter == 20)
+            if (counter <= 20)
             {
-                counter = 0;
+                counter++;
                 return;
             }
-            counter++;
+            counter = 0;
             basicDataModel.IsOnTrack = e.IsOnTrack;
             basicDataModel.LapPercentage = e.LapDistPct;
             basicDataModel.LapCount = e.Lap;
