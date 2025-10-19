@@ -2,13 +2,13 @@
 using Data;
 using Microsoft.Extensions.Logging;
 using SVappsLAB.iRacingTelemetrySDK;
-using System.Diagnostics.Metrics;
-using System.Threading.Tasks;
 
 
 [RequiredTelemetryVars(["isontrack", "lapdistpct", "lap"])]
 internal class Program
 {
+    private static string? ipAddress;
+
     private static async Task Main(string[] args)
     {
         var counter = 0;
@@ -37,7 +37,18 @@ internal class Program
             LapPercentage = -1f
         };
 
-        NetworkFunctionality udpThread = new("192.168.178.255", 12345, basicDataModel, cancelationToken);
+        if (args.Length == 0)
+        {
+            Console.WriteLine("Write the IP address:");
+            ipAddress = Console.ReadLine();
+        }
+        else
+        {
+            ipAddress = args[0];
+        }
+
+
+            NetworkFunctionality udpThread = new(ipAddress, 12345, basicDataModel, cancelationToken);
 
 
         // create telemetry client
